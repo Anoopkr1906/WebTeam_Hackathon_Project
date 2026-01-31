@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['POLICE', 'USER'],
-        default: 'USER'
+        enum: ['POLICE'],
+        default: 'POLICE'
     },
     stationName: {
         type: String,
