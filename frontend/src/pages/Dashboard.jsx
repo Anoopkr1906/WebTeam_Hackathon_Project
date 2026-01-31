@@ -28,68 +28,106 @@ const Dashboard = () => {
 
     if (loading) return <div style={{ padding: '2rem' }}>Loading Stats...</div>; // Added padding for consistency
 
-    return (
-        <div style={{ padding: '2rem' }}> {/* Added padding to the main div */}
-            <h1 style={{ marginBottom: '2rem' }}>Station Overview</h1>
-            <p>Welcome, {user?.username} ({user?.role})</p> {/* Added back user info */}
-            <p>Station: {user?.stationName}</p> {/* Added back user info */}
+    const handleExport = () => {
+        const headers = ['Case ID', 'Station', 'Crime No', 'Year', 'Status', 'Date'];
+        const csvContent = [
+            headers.join(','),
+            ...stats.recentActivity.map(c => [
+                c.caseId,
+                c.stationName,
+                c.crimeNumber,
+                c.crimeYear,
+                c.status,
+                new Date(c.createdAt).toLocaleDateString()
+            ].join(','))
+        ].join('\n');
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem', marginTop: '2rem' }}> {/* Added marginTop */}
-                <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ color: 'var(--color-text-secondary)', margin: 0 }}>Total Cases</h3>
-                    <span style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--color-accent-blue)' }}>{stats.totalCases}</span>
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `report-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+    };
+
+    return (
+        <div style={{ padding: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                <div>
+                    <h1 style={{ margin: 0 }}>Dashboard</h1>
+                    <p style={{ color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}>Welcome back, {user?.username} <span style={{ fontSize: '0.8rem', background: 'var(--color-accent-blue)', padding: '2px 8px', borderRadius: '40px', color: 'white' }}>{user?.role}</span></p>
                 </div>
-                <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ color: 'var(--color-text-secondary)', margin: 0 }}>Pending</h3>
-                    <span style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--color-accent-gold)' }}>{stats.pendingCases}</span>
-                </div>
-                <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ color: 'var(--color-text-secondary)', margin: 0 }}>Disposed</h3>
-                    <span style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--color-success)' }}>{stats.disposedCases}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <button onClick={handleExport} className="btn-primary" style={{ background: 'var(--color-bg-card)', border: '1px solid var(--glass-border)' }}>
+                        📄 Export Report
+                    </button>
                 </div>
             </div>
 
-            <h2 style={{ marginBottom: '1rem' }}>Recent Activity</h2>
-            <div className="glass-card" style={{ padding: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+                <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
+                    <h3>Total Cases</h3>
+                    <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-accent-blue)' }}>{stats.totalCases}</p>
+                </div>
+                <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
+                    <h3>Pending</h3>
+                    <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-accent-gold)' }}>{stats.pendingCases}</p>
+                </div>
+                <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
+                    <h3>Disposed</h3>
+                    <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-success)' }}>{stats.disposedCases}</p>
+                </div>
+            </div>
+
+            {/* High Alert Section */}
+            <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--color-danger)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                    <h3 style={{ color: 'var(--color-danger)', margin: 0 }}>High Alert: Long Pending Cases</h3>
+                    <p style={{ margin: '0.5rem 0 0', color: 'var(--color-text-secondary)' }}>Cases pending implementation for more than 30 days requires immediate attention.</p>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                    <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-danger)', margin: 0 }}>{stats.alerts ? stats.alerts.longPending : 0}</p>
+                    <small style={{ color: 'var(--color-text-secondary)' }}>Cases</small>
+                </div>
+            </div>
+
+            <div className="glass-card" style={{ padding: '1.5rem' }}>
+                <h3>Recent Activity</h3>
                 {stats.recentActivity.length === 0 ? (
-                    <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}>No recent cases logged.</p>
+                    <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginTop: '1rem' }}>No recent cases logged.</p>
                 ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
                         <thead>
-                            <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.5rem' }}>Crime #</th>
-                                <th style={{ padding: '0.5rem' }}>Year</th>
-                                <th style={{ padding: '0.5rem' }}>Date</th>
+                            <tr style={{ textAlign: 'left', color: 'var(--color-text-secondary)' }}>
+                                <th style={{ padding: '0.5rem' }}>Case ID</th>
+                                <th style={{ padding: '0.5rem' }}>Station</th>
                                 <th style={{ padding: '0.5rem' }}>Status</th>
+                                <th style={{ padding: '0.5rem' }}>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {stats.recentActivity.map(item => (
-                                <tr key={item._id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                    <td style={{ padding: '0.8rem' }}>{item.crimeNumber}</td>
-                                    <td style={{ padding: '0.8rem' }}>{item.crimeYear}</td>
-                                    <td style={{ padding: '0.8rem' }}>{new Date(item.createdAt).toLocaleDateString()}</td>
-                                    <td style={{ padding: '0.8rem' }}>
+                            {stats.recentActivity.map(c => (
+                                <tr key={c._id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                                    <td style={{ padding: '1rem', color: 'var(--color-text-primary)' }}>{c.caseId}</td>
+                                    <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{c.stationName}</td>
+                                    <td style={{ padding: '1rem' }}>
                                         <span style={{
                                             padding: '0.2rem 0.6rem',
                                             borderRadius: '20px',
                                             fontSize: '0.8rem',
-                                            background: item.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)',
-                                            color: item.status === 'PENDING' ? 'var(--color-accent-gold)' : 'var(--color-success)'
+                                            background: c.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)',
+                                            color: c.status === 'PENDING' ? 'var(--color-accent-gold)' : 'var(--color-success)'
                                         }}>
-                                            {item.status}
+                                            {c.status}
                                         </span>
                                     </td>
+                                    <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{new Date(c.createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
             </div>
-
-            <button onClick={logout} className="btn-primary" style={{ marginTop: '2rem', background: 'var(--color-danger)' }}>
-                Logout
-            </button>
         </div>
     );
 };

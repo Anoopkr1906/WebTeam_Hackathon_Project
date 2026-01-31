@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import NewCase from './pages/NewCase';
 import SearchCases from './pages/SearchCases';
 import CaseDetails from './pages/CaseDetails';
+import DisposalArea from './pages/DisposalArea';
+import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import Layout from './components/Layout';
@@ -57,7 +59,26 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route
+            path="/disposal"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DisposalArea />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Home />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
     </AuthProvider>

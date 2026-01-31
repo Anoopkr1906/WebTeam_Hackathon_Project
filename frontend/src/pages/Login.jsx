@@ -28,7 +28,7 @@ const Login = () => {
             }
 
             login(data.user, data.token);
-            navigate('/dashboard');
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -38,7 +38,7 @@ const Login = () => {
         <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div className="glass-card" style={{ padding: '2rem', width: '100%', maxWidth: '400px' }}>
                 <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: 'var(--color-accent-blue)' }}>
-                    e-Malkhana Login
+                    Police Login
                 </h2>
 
                 {error && (
