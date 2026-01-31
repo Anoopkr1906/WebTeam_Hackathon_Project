@@ -64,7 +64,7 @@ npm install
 *   Create a `.env` file in the `backend` folder:
     ```env
     PORT=5000
-    MONGO_URI=mongodb://localhost:27017/emalkhana
+    MONGO_URI=db_uri
     JWT_SECRET=your_secret_key
     CLOUDINARY_CLOUD_NAME=your_cloud_name
     CLOUDINARY_API_KEY=your_api_key
