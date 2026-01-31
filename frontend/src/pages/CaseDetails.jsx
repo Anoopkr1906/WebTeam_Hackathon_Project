@@ -74,7 +74,7 @@ const CaseDetails = () => {
     const handleDisposal = async (e) => {
         e.preventDefault();
         if (!selectedProperty) return;
-        if (!confirm('Permanently dispose this item?')) return;
+        // Native confirm removed in favor of UI Modal confirmation
 
         try {
             const res = await fetch('http://localhost:5000/api/disposal', {
@@ -279,7 +279,10 @@ const CaseDetails = () => {
             {showDisposalModal && (
                 <div style={{ position: 'fixed', inset: 0, background: 'var(--modal-overlay)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
                     <div className="glass-card" style={{ width: '400px', padding: '2rem', background: 'var(--color-bg-card)' }}>
-                        <h3 style={{ color: 'var(--color-danger)' }}>Dispose Item</h3>
+                        <h3 style={{ color: 'var(--color-danger)' }}>Confirm Disposal</h3>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                            Are you sure you want to permanently dispose of this item? This action cannot be undone.
+                        </p>
                         <form onSubmit={handleDisposal}>
                             <select className="input-field" value={disposalData.disposalType} onChange={e => setDisposalData({ ...disposalData, disposalType: e.target.value })}>
                                 <option value="RETURNED">Returned</option>
@@ -289,7 +292,7 @@ const CaseDetails = () => {
                             <input placeholder="Order Ref" className="input-field" required value={disposalData.courtOrderRef} onChange={e => setDisposalData({ ...disposalData, courtOrderRef: e.target.value })} />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => setShowDisposalModal(false)} className="btn-primary" style={{ background: 'transparent' }}>Cancel</button>
-                                <button type="submit" className="btn-primary" style={{ background: 'var(--color-danger)' }}>Dispose</button>
+                                <button type="submit" className="btn-primary" style={{ background: 'var(--color-danger)' }}>Confirm Disposal</button>
                             </div>
                         </form>
                     </div>
