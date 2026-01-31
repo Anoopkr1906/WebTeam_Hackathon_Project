@@ -118,6 +118,136 @@ const CaseDetails = () => {
         finally { setLoading(false); }
     };
 
+    const handlePrintReport = () => {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Official Report - ${data.case.caseId}</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; padding: 2rem; color: #000; }
+                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .logo { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+                        .sub-header { margin-top: 5px; font-size: 14px; }
+                        .case-title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin: 2rem 0; }
+                        
+                        .section { margin-bottom: 2rem; }
+                        .section-title { font-weight: bold; font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
+                        
+                        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+                        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                        th { background-color: #f0f0f0; font-weight: bold; }
+                        
+                        .footer { margin-top: 4rem; display: flex; justify-content: space-between; page-break-inside: avoid; }
+                        .signature-box { text-align: center; width: 40%; }
+                        .signature-line { border-top: 1px solid #000; margin-top: 3rem; padding-top: 5px; font-weight: bold; }
+                        
+                        @media print {
+                            body { -webkit-print-color-adjust: exact; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">e-Malkhana Evidence Management System</div>
+                        <div class="sub-header">${data.case.stationName || 'Police Department'} | Official Record</div>
+                        <div class="sub-header">Generated on: ${new Date().toLocaleString()}</div>
+                    </div>
+
+                    <div class="case-title">CASE PROPERTY REPORT</div>
+
+                    <div class="section">
+                        <div class="section-title">1. CASE DETAILS</div>
+                        <table>
+                            <tr><th width="30%">Case ID</th><td>${data.case.caseId}</td></tr>
+                            <tr><th>Crime Number</th><td>${data.case.crimeNumber} / ${data.case.crimeYear}</td></tr>
+                            <tr><th>Police Station</th><td>${data.case.stationName}</td></tr>
+                            <tr><th>Investigating Officer</th><td>${data.case.investigatingOfficer} (${data.case.officerId})</td></tr>
+                            <tr><th>Date of Seizure</th><td>${new Date(data.case.dateOfSeizure).toLocaleDateString()}</td></tr>
+                            <tr><th>Act / Section</th><td>${data.case.actSection}</td></tr>
+                            <tr><th>Current Status</th><td>${data.case.status}</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">2. SEIZED PROPERTIES</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>QR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.properties.map((p, i) => `
+                                    <tr>
+                                        <td>${i + 1}</td>
+                                        <td>${p.category}<br><small>${p.nature}</small></td>
+                                        <td>${p.description}</td>
+                                        <td>${p.location}</td>
+                                        <td>${p.quantity}</td>
+                                        <td>${p.status}</td>
+                                        <td>
+                                            ${p.qrCodeData ? `<img src="${p.qrCodeData}" style="width: 50px; height: 50px;" />` : '-'}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">3. CHAIN OF CUSTODY LOG</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date/Time</th>
+                                    <th>Action</th>
+                                    <th>Purpose</th>
+                                    <th>Officer</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.logs.map(l => `
+                                    <tr>
+                                        <td>${new Date(l.timestamp).toLocaleString()}</td>
+                                        <td>${l.action}</td>
+                                        <td>${l.purpose || '-'}</td>
+                                        <td>${l.toOfficer || l.fromOfficer}</td>
+                                        <td>${l.remarks || ''}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="footer">
+                        <div class="signature-box">
+                            <div class="signature-line">Investigating Officer</div>
+                            <small>${data.case.investigatingOfficer}</small>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-line">Malkhana In-Charge</div>
+                            <small>${user?.username || 'Authorized Signatory'}</small>
+                        </div>
+                    </div>
+
+                    <script>
+                        window.onload = function() { window.print(); }
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    };
+
     if (loading) return <div style={{ padding: '2rem' }}>Loading...</div>;
     if (!data) return <div style={{ padding: '2rem' }}>Case not found</div>;
 
@@ -147,6 +277,10 @@ const CaseDetails = () => {
                         Mark as Completed
                     </button>
                 )}
+
+                <button onClick={handlePrintReport} className="btn-primary" style={{ marginLeft: '1rem', background: 'var(--color-bg-card)', border: '1px solid var(--glass-border)', fontSize: '0.9rem' }}>
+                    <FaPrint /> Print Formal Report
+                </button>
             </div>
 
             <div className="case-details-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>

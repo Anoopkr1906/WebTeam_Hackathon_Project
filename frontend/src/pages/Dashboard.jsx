@@ -29,25 +29,115 @@ const Dashboard = () => {
     if (loading) return <div style={{ padding: '2rem' }}>Loading Stats...</div>; // Added padding for consistency
 
     const handleExport = () => {
-        const headers = ['Case ID', 'Station', 'Crime No', 'Year', 'Status', 'Date'];
-        const csvContent = [
-            headers.join(','),
-            ...stats.recentActivity.map(c => [
-                c.caseId,
-                c.stationName,
-                c.crimeNumber,
-                c.crimeYear,
-                c.status,
-                new Date(c.createdAt).toLocaleDateString()
-            ].join(','))
-        ].join('\n');
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Dashboard Summary Report</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; padding: 2rem; color: #000; }
+                        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .logo { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+                        .sub-header { margin-top: 5px; font-size: 14px; }
+                        .report-title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin: 2rem 0; }
+                        
+                        .section { margin-bottom: 2rem; }
+                        .section-title { font-weight: bold; font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
+                        
+                        .stats-grid { display: flex; justify-content: space-between; margin-bottom: 2rem; border: 1px solid #000; padding: 1rem; }
+                        .stat-box { text-align: center; border-right: 1px solid #ccc; flex: 1; }
+                        .stat-box:last-child { border-right: none; }
+                        .stat-value { font-size: 20px; font-weight: bold; margin-top: 5px; }
+                        .stat-label { font-size: 12px; text-transform: uppercase; }
 
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `report-${new Date().toISOString().split('T')[0]}.csv`;
-        a.click();
+                        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+                        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                        th { background-color: #f0f0f0; font-weight: bold; }
+                        
+                        .footer { margin-top: 4rem; display: flex; justify-content: space-between; page-break-inside: avoid; }
+                        .signature-box { text-align: center; width: 40%; }
+                        .signature-line { border-top: 1px solid #000; margin-top: 3rem; padding-top: 5px; font-weight: bold; }
+
+                        @media print {
+                            body { -webkit-print-color-adjust: exact; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">e-Malkhana Evidence Management System</div>
+                        <div class="sub-header">Dashboard Summary & Activity Report</div>
+                        <div class="sub-header">Generated on: ${new Date().toLocaleString()}</div>
+                    </div>
+
+                    <div class="report-title">EXECUTIVE SUMMARY</div>
+
+                    <div class="section">
+                        <div class="section-title">1. CURRENT STATISTICS</div>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-label">Total Cases</div>
+                                <div class="stat-value">${stats.totalCases}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Pending</div>
+                                <div class="stat-value">${stats.pendingCases}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Disposed</div>
+                                <div class="stat-value">${stats.disposedCases}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">High Alerts</div>
+                                <div class="stat-value">${stats.alerts ? stats.alerts.longPending : 0}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">2. RECENT ACTIVITY LOG</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title / Case ID</th>
+                                    <th>Station</th>
+                                    <th>Crime No.</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${stats.recentActivity.map(c => `
+                                    <tr>
+                                        <td>${c.caseId}</td>
+                                        <td>${c.stationName}</td>
+                                        <td>${c.crimeNumber}/${c.crimeYear}</td>
+                                        <td>${c.status}</td>
+                                        <td>${new Date(c.createdAt).toLocaleDateString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="footer">
+                        <div class="signature-box">
+                            <div class="signature-line">Report Generated By</div>
+                            <small>${user?.username || 'System User'}</small>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-line">Verified By</div>
+                            <small>Station House Officer (SHO)</small>
+                        </div>
+                    </div>
+
+                    <script>
+                        window.onload = function() { window.print(); }
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
     };
 
     return (
@@ -59,7 +149,7 @@ const Dashboard = () => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <button onClick={handleExport} className="btn-primary" style={{ border: '1px solid var(--glass-border)' }}>
-                        📄 Export Report
+                        🖨️ Print Dashboard Report
                     </button>
                 </div>
             </div>
