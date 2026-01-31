@@ -20,6 +20,7 @@ const custodyLogSchema = new mongoose.Schema({
         enum: ['SEIZURE', 'TRANSFER', 'CHECKIN', 'CHECKOUT', 'DISPOSAL'],
         required: true
     },
+    purpose: String, // e.g. Court, FSL, Storage
     remarks: String,
     timestamp: {
         type: Date,

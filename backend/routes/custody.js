@@ -9,7 +9,7 @@ const Case = require('../models/Case'); // Optional if we need to check case sta
 // @access  Private (Police)
 router.post('/', async (req, res) => {
     try {
-        const { propertyId, caseId, toLocation, toOfficer, action, remarks, fromLocation, fromOfficer } = req.body;
+        const { propertyId, caseId, toLocation, toOfficer, action, purpose, remarks, fromLocation, fromOfficer } = req.body;
 
         // 1. Create Log Entry
         const newLog = new CustodyLog({
@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
             toLocation,
             toOfficer,
             action,
+            purpose,
             remarks
         });
 

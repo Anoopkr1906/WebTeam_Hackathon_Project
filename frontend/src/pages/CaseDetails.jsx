@@ -20,7 +20,7 @@ const CaseDetails = () => {
     const [selectedProperty, setSelectedProperty] = useState(null);
 
     // Forms
-    const [transferData, setTransferData] = useState({ action: 'TRANSFER', toLocation: '', toOfficer: '', remarks: '' });
+    const [transferData, setTransferData] = useState({ action: 'TRANSFER', toLocation: '', toOfficer: '', purpose: '', remarks: '' });
     const [disposalData, setDisposalData] = useState({ disposalType: 'RETURNED', courtOrderRef: '', remarks: '' });
     const [newPropertyData, setNewPropertyData] = useState({
         category: 'General', belongingTo: 'UNKNOWN', nature: '', quantity: '', location: '', description: '', image: null
@@ -168,7 +168,7 @@ const CaseDetails = () => {
                     {/* Properties List */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2>Seized Properties</h2>
-                        {user?.role === 'POLICE' && caseInfo.status !== 'CLOSED' && (
+                        {caseInfo.status !== 'CLOSED' && (
                             <button onClick={() => setShowAddPropertyModal(true)} className="btn-primary" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}> <FaPlus /> Add Property </button>
                         )}
                     </div>
@@ -191,7 +191,7 @@ const CaseDetails = () => {
                                         <span>Qty: {prop.quantity}</span>
                                     </div>
 
-                                    {user?.role === 'POLICE' && prop.status !== 'DISPOSED' && (
+                                    {prop.status !== 'DISPOSED' && (
                                         <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
                                             <button onClick={() => { setSelectedProperty(prop); setShowTransferModal(true); }} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Move</button>
                                             <button onClick={() => { setSelectedProperty(prop); setShowDisposalModal(true); }} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--color-danger)' }}>Dispose</button>
@@ -215,7 +215,7 @@ const CaseDetails = () => {
                         <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
                             {logs.map((log) => (
                                 <li key={log._id} style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <strong>{log.action}</strong> <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>{new Date(log.timestamp).toLocaleString()}</span>
+                                    <strong>{log.action}</strong> {log.purpose && <span style={{ background: 'var(--color-bg-card)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', marginLeft: '0.5rem' }}>{log.purpose}</span>} <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>{new Date(log.timestamp).toLocaleString()}</span>
                                     <div style={{ fontSize: '0.9rem' }}>{log.remarks} (Item ID: ...{log.propertyId.slice(-4)})</div>
                                 </li>
                             ))}
@@ -255,6 +255,16 @@ const CaseDetails = () => {
                             {/* Fields same as before */}
                             <input placeholder="To Location" className="input-field" required value={transferData.toLocation} onChange={e => setTransferData({ ...transferData, toLocation: e.target.value })} />
                             <input placeholder="To Officer" className="input-field" required value={transferData.toOfficer} onChange={e => setTransferData({ ...transferData, toOfficer: e.target.value })} />
+
+                            <select className="input-field" value={transferData.purpose} onChange={e => setTransferData({ ...transferData, purpose: e.target.value })}>
+                                <option value="">Select Purpose</option>
+                                <option value="Storage">Storage</option>
+                                <option value="Court Hearing">Court Hearing</option>
+                                <option value="FSL Analysis">FSL Analysis</option>
+                                <option value="Investigation">Investigation</option>
+                                <option value="Other">Other</option>
+                            </select>
+
                             <textarea placeholder="Remarks" className="input-field" value={transferData.remarks} onChange={e => setTransferData({ ...transferData, remarks: e.target.value })} />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => setShowTransferModal(false)} className="btn-primary" style={{ background: 'transparent' }}>Cancel</button>
