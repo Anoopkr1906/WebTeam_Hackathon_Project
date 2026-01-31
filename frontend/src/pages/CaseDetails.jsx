@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaArrowLeft, FaExchangeAlt, FaTrashAlt, FaPrint, FaPlus } from 'react-icons/fa';
+import API_BASE_URL from '../config';
 
 const CaseDetails = () => {
     const { id } = useParams();
@@ -32,7 +33,7 @@ const CaseDetails = () => {
 
     const fetchCaseDetails = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/cases/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/cases/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const result = await res.json();
@@ -52,7 +53,7 @@ const CaseDetails = () => {
         if (!confirm('Update custody for this item?')) return;
 
         try {
-            const res = await fetch('http://localhost:5000/api/custody', {
+            const res = await fetch(`${API_BASE_URL}/api/custody`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({
@@ -77,7 +78,7 @@ const CaseDetails = () => {
         // Native confirm removed in favor of UI Modal confirmation
 
         try {
-            const res = await fetch('http://localhost:5000/api/disposal', {
+            const res = await fetch(`${API_BASE_URL}/api/disposal`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({
@@ -105,7 +106,7 @@ const CaseDetails = () => {
         if (newPropertyData.image) formData.append('image', newPropertyData.image);
 
         try {
-            const res = await fetch(`http://localhost:5000/api/cases/${id}/properties`, {
+            const res = await fetch(`${API_BASE_URL}/api/cases/${id}/properties`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -264,7 +265,7 @@ const CaseDetails = () => {
                     <button onClick={async () => {
                         if (confirm('Are you sure you want to mark this case as COMPLETED/CLOSED?')) {
                             try {
-                                const res = await fetch(`http://localhost:5000/api/cases/${caseInfo.caseId}/status`, {
+                                const res = await fetch(`${API_BASE_URL}/api/cases/${caseInfo.caseId}/status`, {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                                     body: JSON.stringify({ status: 'CLOSED' })

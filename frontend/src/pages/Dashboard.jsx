@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config';
 
 const Dashboard = () => {
     const { user, token, logout } = useAuth(); // Added logout here
@@ -9,7 +10,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/dashboard/stats', {
+                const res = await fetch(`${API_BASE_URL}/api/dashboard/stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}` // In case backend needs it later
                     }

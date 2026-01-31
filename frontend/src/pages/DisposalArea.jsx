@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config';
 
 const DisposalArea = () => {
     const { token } = useAuth();
@@ -12,7 +13,7 @@ const DisposalArea = () => {
 
     const fetchDisposalRecords = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/disposal', {
+            const res = await fetch(`${API_BASE_URL}/api/disposal`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();

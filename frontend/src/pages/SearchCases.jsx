@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 const SearchCases = () => {
     const { token } = useAuth();
@@ -15,7 +16,7 @@ const SearchCases = () => {
 
     const fetchCases = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/cases', {
+            const res = await fetch(`${API_BASE_URL}/api/cases`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
