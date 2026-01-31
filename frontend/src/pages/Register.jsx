@@ -5,7 +5,7 @@ const Register = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        role: 'USER',
+        confirmPassword: '',
         stationName: '',
         officerId: ''
     });
@@ -16,13 +16,24 @@ const Register = () => {
         e.preventDefault();
         setError('');
 
+        if (formData.password !== formData.confirmPassword) {
+            setError("Passwords do not match");
+            return;
+        }
+
         try {
+            // Role is handled by backend now (default POLICE)
             const res = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    username: formData.username,
+                    password: formData.password,
+                    stationName: formData.stationName,
+                    officerId: formData.officerId
+                })
             });
 
             const data = await res.json();
@@ -31,7 +42,7 @@ const Register = () => {
                 throw new Error(data.message || 'Registration failed');
             }
 
-            alert('Registration Successful! Please Login.');
+            alert('Police Account Created! Please Login.');
             navigate('/login');
         } catch (err) {
             setError(err.message);
@@ -42,7 +53,7 @@ const Register = () => {
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
             <div className="glass-card" style={{ padding: '2rem', width: '100%', maxWidth: '450px' }}>
                 <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: 'var(--color-accent-blue)' }}>
-                    Create Account
+                    Police Registration
                 </h2>
 
                 {error && (
@@ -63,42 +74,42 @@ const Register = () => {
                         />
                     </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
-                        <input
-                            type="password"
-                            className="input-field"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            required
-                        />
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div style={{ flex: 1 }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
+                            <input
+                                type="password"
+                                className="input-field"
+                                value={formData.password}
+                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Confirm Password</label>
+                            <input
+                                type="password"
+                                className="input-field"
+                                value={formData.confirmPassword}
+                                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Role</label>
-                        <select
-                            className="input-field"
-                            value={formData.role}
-                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                        >
-                            <option value="USER">Normal User</option>
-                            <option value="POLICE">Police Officer</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Station Name {formData.role === 'USER' && '(Optional)'}</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Station Name</label>
                         <input
                             type="text"
                             className="input-field"
                             value={formData.stationName}
                             onChange={(e) => setFormData({ ...formData, stationName: e.target.value })}
-                            required={formData.role === 'POLICE'}
+                            required
                         />
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Officer/User ID</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Officer ID</label>
                         <input
                             type="text"
                             className="input-field"
