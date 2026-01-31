@@ -223,4 +223,25 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// @route   PUT /api/cases/:id/status
+// @desc    Update case status (e.g. to CLOSED)
+router.put('/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const caseItem = await Case.findOne({ caseId: req.params.id });
+
+        if (!caseItem) {
+            return res.status(404).json({ message: 'Case not found' });
+        }
+
+        caseItem.status = status;
+        await caseItem.save();
+
+        res.json(caseItem);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;
