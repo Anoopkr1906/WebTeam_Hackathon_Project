@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaHome, FaPlus, FaSearch, FaBox, FaSignOutAlt } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
+import { FaHome, FaPlus, FaSearch, FaBox, FaSignOutAlt, FaSun, FaMoon } from 'react-icons/fa';
 
 const Sidebar = () => {
     const { user, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const location = useLocation();
     const [showLogoutModal, setShowLogoutModal] = React.useState(false); // Need to import React or useState
 
@@ -64,6 +66,9 @@ const Sidebar = () => {
                     </div>
                     <button onClick={handleLogoutClick} className="nav-link" style={{ width: '100%', background: 'transparent', border: 'none', color: 'var(--color-danger)' }}>
                         <FaSignOutAlt /> Logout
+                    </button>
+                    <button onClick={toggleTheme} className="nav-link" style={{ width: '100%', background: 'transparent', border: 'none', color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}>
+                        {theme === 'dark' ? <FaSun /> : <FaMoon />} {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                     </button>
                 </div>
             </div>

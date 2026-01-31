@@ -58,7 +58,7 @@ const Dashboard = () => {
                     <p style={{ color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}>Welcome back, {user?.username} <span style={{ fontSize: '0.8rem', background: 'var(--color-accent-blue)', padding: '2px 8px', borderRadius: '40px', color: 'white' }}>{user?.role}</span></p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button onClick={handleExport} className="btn-primary" style={{ background: 'var(--color-bg-card)', border: '1px solid var(--glass-border)' }}>
+                    <button onClick={handleExport} className="btn-primary" style={{ border: '1px solid var(--glass-border)' }}>
                         📄 Export Report
                     </button>
                 </div>

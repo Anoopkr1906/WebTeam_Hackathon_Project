@@ -12,76 +12,80 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import Layout from './components/Layout';
 
+import { ThemeProvider } from './context/ThemeContext';
+
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/new-case"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <NewCase />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <SearchCases />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/cases/:id"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <CaseDetails />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/disposal"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <DisposalArea />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <Home />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Dashboard />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/new-case"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <NewCase />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <SearchCases />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cases/:id"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <CaseDetails />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/disposal"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <DisposalArea />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Home />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
