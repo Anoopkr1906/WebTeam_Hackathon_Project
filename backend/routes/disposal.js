@@ -61,4 +61,20 @@ router.post('/', async (req, res) => {
     }
 });
 
+// @route   GET /api/disposal
+// @desc    Get all disposal records
+// @access  Private
+router.get('/', async (req, res) => {
+    try {
+        const records = await DisposalRecord.find()
+            .populate('propertyId', 'category description quantity location')
+            .populate('caseId', 'caseId stationName')
+            .sort({ date: -1 });
+        res.json(records);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;

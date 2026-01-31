@@ -15,11 +15,23 @@ router.get('/stats', async (req, res) => {
         // Mock recent activity for now
         const recentActivity = await Case.find().sort({ createdAt: -1 }).limit(5);
 
+        // Alerts: Count cases pending for more than 30 days
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const longPendingCases = await Case.countDocuments({
+            status: 'PENDING',
+            createdAt: { $lt: thirtyDaysAgo }
+        });
+
         res.json({
             totalCases,
             pendingCases,
             disposedCases,
-            recentActivity
+            recentActivity,
+            alerts: {
+                longPending: longPendingCases
+            }
         });
     } catch (err) {
         console.error(err.message);

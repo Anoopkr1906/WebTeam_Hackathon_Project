@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
         user = new User({
             username,
             password,
-            role,
+            role: 'POLICE',
             stationName,
             officerId
         });
