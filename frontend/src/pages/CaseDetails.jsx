@@ -149,7 +149,7 @@ const CaseDetails = () => {
                 )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+            <div className="case-details-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
 
                 {/* Left Column */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -227,8 +227,8 @@ const CaseDetails = () => {
 
             {/* Modals for Add Property, Transfer, Disposal (Simplified for brevity) */}
             {showAddPropertyModal && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <div className="glass-card" style={{ width: '500px', padding: '2rem', background: '#1e293b' }}>
+                <div style={{ position: 'fixed', inset: 0, background: 'var(--modal-overlay)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                    <div className="glass-card" style={{ width: '500px', padding: '2rem', background: 'var(--color-bg-card)' }}>
                         <h3>Add New Property</h3>
                         <form onSubmit={handleAddProperty} style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
                             <input placeholder="Category" className="input-field" value={newPropertyData.category} onChange={e => setNewPropertyData({ ...newPropertyData, category: e.target.value })} required />
@@ -248,8 +248,8 @@ const CaseDetails = () => {
 
             {/* Transfer Modal - Reused logic from previous step, just bound to selectedProperty */}
             {showTransferModal && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <div className="glass-card" style={{ width: '400px', padding: '2rem', background: '#1e293b' }}>
+                <div style={{ position: 'fixed', inset: 0, background: 'var(--modal-overlay)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                    <div className="glass-card" style={{ width: '400px', padding: '2rem', background: 'var(--color-bg-card)' }}>
                         <h3>Move Item</h3>
                         <form onSubmit={handleTransfer}>
                             {/* Fields same as before */}
@@ -277,8 +277,8 @@ const CaseDetails = () => {
 
             {/* Disposal Modal - Reused logic */}
             {showDisposalModal && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-                    <div className="glass-card" style={{ width: '400px', padding: '2rem', background: '#1e293b' }}>
+                <div style={{ position: 'fixed', inset: 0, background: 'var(--modal-overlay)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+                    <div className="glass-card" style={{ width: '400px', padding: '2rem', background: 'var(--color-bg-card)' }}>
                         <h3 style={{ color: 'var(--color-danger)' }}>Dispose Item</h3>
                         <form onSubmit={handleDisposal}>
                             <select className="input-field" value={disposalData.disposalType} onChange={e => setDisposalData({ ...disposalData, disposalType: e.target.value })}>

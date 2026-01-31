@@ -13,9 +13,9 @@ const Home = () => {
     }, []);
 
     const cardStyle = {
-        background: 'rgba(255, 255, 255, 0.05)',
+        background: 'var(--glass-bg)',
         backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        border: '1px solid var(--glass-border)',
         borderRadius: '16px',
         padding: '2rem',
         textAlign: 'center',
@@ -31,22 +31,10 @@ const Home = () => {
     };
 
     return (
-        <div style={{
-            padding: '4rem 2rem',
-            textAlign: 'center',
-            opacity: fadeIn ? 1 : 0,
-            transform: fadeIn ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.8s ease, transform 0.8s ease'
-        }}>
+        <div className="home-container" style={{ opacity: fadeIn ? 1 : 0, transform: fadeIn ? 'translateY(0)' : 'translateY(20px)' }}>
 
             <div style={{ marginBottom: '4rem' }}>
-                <h1 style={{
-                    fontSize: '3.5rem',
-                    background: 'linear-gradient(to right, #fff, #94a3b8)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    marginBottom: '1rem'
-                }}>
+                <h1 className="home-title">
                     Welcome to e-Malkhana
                 </h1>
                 <p style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
@@ -58,39 +46,36 @@ const Home = () => {
             <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
 
                 <div
-                    style={cardStyle}
                     className="feature-card"
                     onClick={() => navigate('/dashboard')}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(59, 130, 246, 0.2)'; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = 'var(--glass-shadow)'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
-                    <FaBoxOpen style={iconStyle} />
+                    <FaBoxOpen className="feature-icon" style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--color-accent-blue)' }} />
                     <h3>Manage Evidence</h3>
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>Track inventory stats and recent seizures.</p>
+                    <p>Track inventory stats and recent seizures.</p>
                 </div>
 
                 <div
-                    style={cardStyle}
                     className="feature-card"
                     onClick={() => user?.role === 'POLICE' ? navigate('/new-case') : alert('Authorized Access Only')}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(245, 158, 11, 0.2)'; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = 'var(--glass-shadow)'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
-                    <FaFingerprint style={{ ...iconStyle, color: 'var(--color-accent-gold)' }} />
+                    <FaFingerprint style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--color-accent-gold)' }} />
                     <h3>Register Case</h3>
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>Log new FIRs and generate QR codes.</p>
+                    <p>Log new FIRs and generate QR codes.</p>
                 </div>
 
                 <div
-                    style={cardStyle}
                     className="feature-card"
                     onClick={() => navigate('/search')}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(34, 197, 94, 0.2)'; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; e.currentTarget.style.boxShadow = 'var(--glass-shadow)'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
-                    <FaShieldAlt style={{ ...iconStyle, color: 'var(--color-success)' }} />
+                    <FaShieldAlt style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--color-success)' }} />
                     <h3>Custody Chain</h3>
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>Securely track evidence movement.</p>
+                    <p>Securely track evidence movement.</p>
                 </div>
 
             </div>

@@ -1,0 +1,114 @@
+/* Responsive Design Overrides */
+
+/* Mobile Sidebar Toggle Button */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2000;
+    padding: 0.5rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--color-accent-blue);
+    cursor: pointer;
+}
+
+/* Home Page Styles */
+.home-container {
+    padding: 4rem 2rem;
+    text-align: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.home-title {
+    font-size: 3.5rem;
+    background: linear-gradient(to right, #f8fafc, #94a3b8);
+    /* Default Dark */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+[data-theme="light"] .home-title {
+    background: linear-gradient(to right, #1e293b, #64748b);
+}
+
+.feature-card {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    color: var(--color-text-primary);
+}
+
+.feature-card h3 {
+    color: var(--color-text-primary);
+}
+
+.feature-card p {
+    color: var(--color-text-secondary) !important;
+}
+
+
+/* Responsive Table */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-110%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        height: 100vh !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        background: var(--color-bg-dark) !important;
+        /* Solid bg for mobile menu */
+        border-right: 1px solid var(--glass-border);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 1rem !important;
+        width: 100% !important;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Case Details Grid */
+    .case-details-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .home-title {
+        font-size: 2.5rem;
+    }
+
+    .home-container {
+        padding: 2rem 1rem;
+    }
+}

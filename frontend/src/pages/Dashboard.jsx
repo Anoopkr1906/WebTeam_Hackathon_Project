@@ -64,7 +64,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
                 <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
                     <h3>Total Cases</h3>
                     <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-accent-blue)' }}>{stats.totalCases}</p>

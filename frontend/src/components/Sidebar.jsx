@@ -4,11 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { FaHome, FaPlus, FaSearch, FaBox, FaSignOutAlt, FaSun, FaMoon } from 'react-icons/fa';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
     const { user, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const location = useLocation();
-    const [showLogoutModal, setShowLogoutModal] = React.useState(false); // Need to import React or useState
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const isActive = (path) => location.pathname === path;
 
@@ -23,14 +23,15 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="sidebar glass-card" style={{
+            <div className={`sidebar glass-card ${isOpen ? 'open' : ''}`} style={{
                 width: '250px',
                 height: '95vh',
                 margin: '1rem',
                 padding: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
-                position: 'fixed'
+                position: 'fixed',
+                transition: 'transform 0.3s ease'
             }}>
                 <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     <Link to="/" style={{ textDecoration: 'none' }}>
@@ -87,7 +88,7 @@ const Sidebar = () => {
                     justifyContent: 'center',
                     zIndex: 2000
                 }}>
-                    <div className="glass-card" style={{ padding: '2rem', width: '300px', textAlign: 'center', background: '#1e293b' }}>
+                    <div className="glass-card" style={{ padding: '2rem', width: '300px', textAlign: 'center', background: 'var(--color-bg-card)' }}>
                         <h3 style={{ marginBottom: '1rem' }}>Confirm Logout</h3>
                         <p style={{ marginBottom: '2rem', color: 'var(--color-text-secondary)' }}>Are you sure you want to log out?</p>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
