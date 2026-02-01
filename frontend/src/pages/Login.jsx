@@ -73,9 +73,6 @@ const Login = () => {
                         Login to System
                     </button>
                 </form>
-                <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--color-text-secondary)' }}>
-                    Don't have an account? <Link to="/register" style={{ color: 'var(--color-accent-blue)' }}>Register here</Link>
-                </p>
             </div>
         </div>
     );

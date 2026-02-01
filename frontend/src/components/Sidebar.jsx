@@ -58,6 +58,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     <Link to="/disposal" className={`nav-link ${isActive('/disposal') ? 'active' : ''}`}>
                         <FaBox /> Disposal Area
                     </Link>
+
+                    {user?.role === 'ADMIN' && (
+                        <Link to="/add-officer" className={`nav-link ${isActive('/add-officer') ? 'active' : ''}`}>
+                            <FaPlus /> Add Officer
+                        </Link>
+                    )}
                 </nav>
 
                 <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '1rem' }}>

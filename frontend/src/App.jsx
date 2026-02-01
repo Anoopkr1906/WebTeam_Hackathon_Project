@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
-import Register from './pages/Register';
+// Register page removed - Admin only adds officers now
+import AddOfficer from './pages/AddOfficer';
 import Dashboard from './pages/Dashboard';
 import NewCase from './pages/NewCase';
 import SearchCases from './pages/SearchCases';
@@ -21,7 +22,16 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/add-officer"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <AddOfficer />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

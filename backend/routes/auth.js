@@ -4,11 +4,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const { protect, admin } = require('../middleware/authMiddleware');
+
 // @route   POST /api/auth/register
-// @desc    Register a new user (Admin/Officer)
-// @access  Public (for verified setup)
-router.post('/register', async (req, res) => {
-    const { username, password, role, stationName, officerId } = req.body;
+// @desc    Register a new user (Only Admin can register)
+// @access  Private/Admin
+router.post('/register', protect, admin, async (req, res) => {
+    const { username, password, stationName, officerId } = req.body;
 
     try {
         let user = await User.findOne({ username });
@@ -30,12 +32,27 @@ router.post('/register', async (req, res) => {
 
         await user.save();
 
-        // Create JWT
+        res.json({ message: 'Officer registered successfully', user: { id: user.id, username: user.username, role: user.role } });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route   POST /api/auth/login
+// @desc    Authenticate user as Admin or Officer
+// @access  Public
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    // 1. Check for Admin Credentials (from .env)
+    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
         const payload = {
             user: {
-                id: user.id,
-                role: user.role,
-                stationName: user.stationName
+                id: 'admin_id_001',
+                role: 'ADMIN',
+                stationName: 'HEADQUARTERS'
             }
         };
 
@@ -45,21 +62,21 @@ router.post('/register', async (req, res) => {
             { expiresIn: '1d' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
+                return res.json({
+                    token,
+                    user: {
+                        id: 'admin_id_001',
+                        username: 'Admin',
+                        role: 'ADMIN',
+                        stationName: 'HEADQUARTERS'
+                    }
+                });
             }
         );
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        return;
     }
-});
 
-// @route   POST /api/auth/login
-// @desc    Authenticate user & get token
-// @access  Public
-router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
+    // 2. Check for Database User (Officer)
     try {
         let user = await User.findOne({ username });
         if (!user) {
@@ -85,7 +102,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
+                res.json({ token, user: { id: user.id, username: user.username, role: user.role, stationName: user.stationName } });
             }
         );
     } catch (err) {
