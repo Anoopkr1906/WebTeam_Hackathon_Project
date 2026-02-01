@@ -97,7 +97,12 @@ body {
 
 ::placeholder {
   color: var(--color-text-secondary);
-  opacity: 0.7;
+  opacity: 1;
+}
+
+[data-theme="light"] ::placeholder {
+  color: #334155;
+  /* Darker Slate for better visibility */
 }
 
 .nav-link {
