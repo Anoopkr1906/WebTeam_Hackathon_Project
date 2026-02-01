@@ -35,7 +35,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             }}>
                 <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
                     <Link to="/" style={{ textDecoration: 'none' }}>
-                        <h2 style={{ color: 'var(--color-accent-blue)', margin: 0 }}>e-Malkhana</h2>
+                        <img src="/logo.png" alt="Logo" style={{ width: '80px', marginBottom: '0.5rem' }} />
+                        <h2 style={{ color: 'var(--color-accent-blue)', margin: 0, fontSize: '1.5rem' }}>e-Malkhana</h2>
                     </Link>
                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
                         {user?.stationName}
@@ -98,7 +99,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <h3 style={{ marginBottom: '1rem' }}>Confirm Logout</h3>
                         <p style={{ marginBottom: '2rem', color: 'var(--color-text-secondary)' }}>Are you sure you want to log out?</p>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                            <button onClick={() => setShowLogoutModal(false)} className="btn-primary" style={{ background: 'transparent', border: '1px solid var(--glass-border)' }}>
+                            <button onClick={() => setShowLogoutModal(false)} className="btn-primary" style={{ background: 'transparent', color: 'var(--color-text-primary)', border: '1px solid var(--glass-border)' }}>
                                 Cancel
                             </button>
                             <button onClick={confirmLogout} className="btn-primary" style={{ background: 'var(--color-danger)' }}>

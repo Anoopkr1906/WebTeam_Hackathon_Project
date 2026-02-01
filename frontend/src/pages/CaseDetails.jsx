@@ -331,7 +331,7 @@ const CaseDetails = () => {
                                             <button onClick={() => { setSelectedProperty(prop); setShowTransferModal(true); }} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Move</button>
                                             <button onClick={() => { setSelectedProperty(prop); setShowDisposalModal(true); }} className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--color-danger)' }}>Dispose</button>
                                             {prop.qrCodeData && (
-                                                <button className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--color-bg-card)', border: '1px solid var(--glass-border)' }} onClick={() => {
+                                                <button className="btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--color-bg-card)', color: 'var(--color-text-primary)', border: '1px solid var(--glass-border)' }} onClick={() => {
                                                     const win = window.open();
                                                     win.document.write(`<img src="${prop.qrCodeData}" style="width: 300px; border: 5px solid black;">`);
                                                     win.print();
@@ -373,7 +373,7 @@ const CaseDetails = () => {
                             <textarea placeholder="Description" className="input-field" value={newPropertyData.description} onChange={e => setNewPropertyData({ ...newPropertyData, description: e.target.value })} required />
                             <input type="file" className="input-field" onChange={e => setNewPropertyData({ ...newPropertyData, image: e.target.files[0] })} />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-                                <button type="button" onClick={() => setShowAddPropertyModal(false)} className="btn-primary" style={{ background: 'transparent' }}>Cancel</button>
+                                <button type="button" onClick={() => setShowAddPropertyModal(false)} className="btn-primary" style={{ background: 'transparent', color: 'var(--color-text-primary)' }}>Cancel</button>
                                 <button type="submit" className="btn-primary">Add</button>
                             </div>
                         </form>
@@ -402,7 +402,7 @@ const CaseDetails = () => {
 
                             <textarea placeholder="Remarks" className="input-field" value={transferData.remarks} onChange={e => setTransferData({ ...transferData, remarks: e.target.value })} />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setShowTransferModal(false)} className="btn-primary" style={{ background: 'transparent' }}>Cancel</button>
+                                <button type="button" onClick={() => setShowTransferModal(false)} className="btn-primary" style={{ background: 'transparent', color: 'var(--color-text-primary)' }}>Cancel</button>
                                 <button type="submit" className="btn-primary">Update</button>
                             </div>
                         </form>
@@ -426,7 +426,7 @@ const CaseDetails = () => {
                             </select>
                             <input placeholder="Order Ref" className="input-field" required value={disposalData.courtOrderRef} onChange={e => setDisposalData({ ...disposalData, courtOrderRef: e.target.value })} />
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setShowDisposalModal(false)} className="btn-primary" style={{ background: 'transparent' }}>Cancel</button>
+                                <button type="button" onClick={() => setShowDisposalModal(false)} className="btn-primary" style={{ background: 'transparent', color: 'var(--color-text-primary)' }}>Cancel</button>
                                 <button type="submit" className="btn-primary" style={{ background: 'var(--color-danger)' }}>Confirm Disposal</button>
                             </div>
                         </form>

@@ -143,7 +143,7 @@ const Dashboard = () => {
 
     return (
         <div style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
                     <h1 style={{ margin: 0 }}>Dashboard</h1>
                     <p style={{ color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}>Welcome back, {user?.username} <span style={{ fontSize: '0.8rem', background: 'var(--color-accent-blue)', padding: '2px 8px', borderRadius: '40px', color: 'white' }}>{user?.role}</span></p>
@@ -171,7 +171,7 @@ const Dashboard = () => {
             </div>
 
             {/* High Alert Section */}
-            <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--color-danger)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="glass-card high-alert-card" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--color-danger)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
                     <h3 style={{ color: 'var(--color-danger)', margin: 0 }}>High Alert: Long Pending Cases</h3>
                     <p style={{ margin: '0.5rem 0 0', color: 'var(--color-text-secondary)' }}>Cases pending implementation for more than 30 days requires immediate attention.</p>
@@ -187,36 +187,38 @@ const Dashboard = () => {
                 {stats.recentActivity.length === 0 ? (
                     <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginTop: '1rem' }}>No recent cases logged.</p>
                 ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
-                        <thead>
-                            <tr style={{ textAlign: 'left', color: 'var(--color-text-secondary)' }}>
-                                <th style={{ padding: '0.5rem' }}>Case ID</th>
-                                <th style={{ padding: '0.5rem' }}>Station</th>
-                                <th style={{ padding: '0.5rem' }}>Status</th>
-                                <th style={{ padding: '0.5rem' }}>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {stats.recentActivity.map(c => (
-                                <tr key={c._id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                    <td style={{ padding: '1rem', color: 'var(--color-text-primary)' }}>{c.caseId}</td>
-                                    <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{c.stationName}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{
-                                            padding: '0.2rem 0.6rem',
-                                            borderRadius: '20px',
-                                            fontSize: '0.8rem',
-                                            background: c.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)',
-                                            color: c.status === 'PENDING' ? 'var(--color-accent-gold)' : 'var(--color-success)'
-                                        }}>
-                                            {c.status}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{new Date(c.createdAt).toLocaleDateString()}</td>
+                    <div className="table-responsive">
+                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
+                            <thead>
+                                <tr style={{ textAlign: 'left', color: 'var(--color-text-secondary)' }}>
+                                    <th style={{ padding: '0.5rem' }}>Case ID</th>
+                                    <th style={{ padding: '0.5rem' }}>Station</th>
+                                    <th style={{ padding: '0.5rem' }}>Status</th>
+                                    <th style={{ padding: '0.5rem' }}>Date</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {stats.recentActivity.map(c => (
+                                    <tr key={c._id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                                        <td style={{ padding: '1rem', color: 'var(--color-text-primary)' }}>{c.caseId}</td>
+                                        <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{c.stationName}</td>
+                                        <td style={{ padding: '1rem' }}>
+                                            <span style={{
+                                                padding: '0.2rem 0.6rem',
+                                                borderRadius: '20px',
+                                                fontSize: '0.8rem',
+                                                background: c.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)',
+                                                color: c.status === 'PENDING' ? 'var(--color-accent-gold)' : 'var(--color-success)'
+                                            }}>
+                                                {c.status}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>{new Date(c.createdAt).toLocaleDateString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>
