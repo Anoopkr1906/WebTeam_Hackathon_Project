@@ -107,7 +107,6 @@ npm run dev
 ---
 
 ## 📸 Screenshots
-*(Add screenshots of your Dashboard, Case Entry, and Timeline here)*
 ![New case entry page](image.png)
 ![Home page](image-1.png)
 

@@ -99,7 +99,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <h3 style={{ marginBottom: '1rem' }}>Confirm Logout</h3>
                         <p style={{ marginBottom: '2rem', color: 'var(--color-text-secondary)' }}>Are you sure you want to log out?</p>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                            <button onClick={() => setShowLogoutModal(false)} className="btn-primary" style={{ background: 'transparent', color: 'var(--color-text-primary)', border: '1px solid var(--glass-border)' }}>
+                            <button onClick={() => setShowLogoutModal(false)} className="btn-primary" style={{ background: 'transparent', color: theme === 'dark' ? 'white' : '#0f172a', border: '1px solid var(--glass-border)' }}>
                                 Cancel
                             </button>
                             <button onClick={confirmLogout} className="btn-primary" style={{ background: 'var(--color-danger)' }}>
