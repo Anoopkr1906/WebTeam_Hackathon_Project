@@ -17,22 +17,17 @@
 
 /* Home Page Styles */
 .home-container {
-    padding: 4rem 2rem;
+    padding: 2rem 2rem;
     text-align: center;
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .home-title {
     font-size: 3.5rem;
-    background: linear-gradient(to right, #f8fafc, #94a3b8);
-    /* Default Dark */
+    background: linear-gradient(to right, var(--color-text-primary), var(--color-text-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 1rem;
-}
-
-[data-theme="light"] .home-title {
-    background: linear-gradient(to right, #1e293b, #64748b);
 }
 
 .feature-card {

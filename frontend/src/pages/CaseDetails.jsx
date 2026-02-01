@@ -257,7 +257,7 @@ const CaseDetails = () => {
     return (
         <div style={{ position: 'relative' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                <button onClick={() => navigate('/search')} className="btn-primary" style={{ padding: '0.5rem', background: 'transparent', border: '1px solid var(--glass-border)' }}> <FaArrowLeft /> </button>
+                <button onClick={() => navigate('/search')} className="btn-primary" style={{ padding: '0.5rem', background: 'transparent', color: 'var(--color-text-primary)', border: '1px solid var(--color-text-primary)' }}> <FaArrowLeft /> </button>
                 <h1>Case: <span style={{ color: 'var(--color-accent-blue)' }}>{caseInfo.caseId}</span></h1>
                 <span style={{ marginLeft: 'auto', padding: '0.5rem 1rem', borderRadius: '20px', background: caseInfo.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)', color: caseInfo.status === 'PENDING' ? 'var(--color-accent-gold)' : 'var(--color-success)', fontWeight: 'bold' }}>{caseInfo.status}</span>
 
@@ -279,7 +279,7 @@ const CaseDetails = () => {
                     </button>
                 )}
 
-                <button onClick={handlePrintReport} className="btn-primary" style={{ marginLeft: '1rem', background: 'var(--color-bg-card)', border: '1px solid var(--glass-border)', fontSize: '0.9rem' }}>
+                <button onClick={handlePrintReport} className="btn-primary" style={{ marginLeft: '1rem', background: 'var(--color-bg-card)', color: 'var(--color-text-primary)', border: '1px solid var(--glass-border)', fontSize: '0.9rem' }}>
                     <FaPrint /> Print Formal Report
                 </button>
             </div>
